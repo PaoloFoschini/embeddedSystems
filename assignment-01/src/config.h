@@ -19,16 +19,21 @@
 
 #define POT_PIN A0
 
-#define LCD1_PIN A5
-#define LCD2_PIN A6
+#define SDA_PIN SDA
+#define SCL_PIN SCL
 #define LCD_ADDRESS 0x27
 #define LCD_ROWS 2
 #define LCD_COLS 16
 
+#define GAME_TICK 20
+#define FADE_AMOUNT 5
+
 #define T1 5000 //Tempo iniziale
-#define F  250 //Riduzione Tempo per Round (regolata dal potenziometro su un base di 4 difficoltà)
+#define F  125 //Riduzione Tempo per Round (regolata dal potenziometro su un base di 4 difficoltà)
 
 #define IDLE_TIME 10000 //Tempo dopo il quale va in deepsleep
+#define CONTINUE_TIME 3000
+#define GO_TIME 2000
 #define GAME_OVER_DURATION 2000 //Tempo di accensione di LS
 
 #endif

@@ -35,44 +35,35 @@ void turnOnLed(int button_number){
   digitalWrite(outputPins[button_number], HIGH);
 }
 
-void keepControlLedFading(int intensity){
-  analogWrite(LS_PIN, intensity);
+void keepControlLedFading(){
+  analogWrite(LS_PIN, currIntensity);
   currIntensity = currIntensity + fadeAmount;
    if (currIntensity == 0 || currIntensity == 255) {
     fadeAmount = -fadeAmount ; 
    } 
-   //delay(20); da fare da parte del chiamante
 }
 
 void setText(String text) {
-    
-    // 1. Pulisci il display per sicurezza
-    lcd.clear(); 
 
-    // 2. Controlla se la stringa è più lunga della prima riga
-    if (text.length() <= LCD_COLS) {
-        
-        // La stringa entra tutta nella prima riga
-        lcd.setCursor(0, 0); // Riga 1, Colonna 1
-        lcd.print(text);
-        
+    lcd.clear();
+    int newlineIndex = text.indexOf('\n');
+    String riga1;
+    String riga2 = ""; // Inizializza a vuoto per sicurezza
+
+    if (newlineIndex == -1) {
+        riga1 = text.substring(0, Math.min(text.length(), LCD_COLS));
     } else {
-        
-        // La stringa è troppo lunga: spezzala.
-        
-        // Parte 1 (Prima riga): Primi LCD_COLS caratteri
-        String riga1 = text.substring(0, LCD_COLS); 
-        
-        // Parte 2 (Seconda riga): Dal carattere LCD_COLS in poi
-        // Prendiamo al massimo altri LCD_COLS caratteri per non eccedere la 2a riga
-        String riga2 = text.substring(LCD_COLS, LCD_COLS * 2); 
-
-        // Stampa la prima riga
-        lcd.setCursor(0, 0); // Riga 1
-        lcd.print(riga1);
-        
-        // Stampa la seconda riga
-        lcd.setCursor(0, 1); // Riga 2
+        riga1 = text.substring(0, newlineIndex);
+        riga1 = riga1.substring(0, Math.min(riga1.length(), LCD_COLS));
+        if (newlineIndex + 1 < text.length()) {
+            riga2 = text.substring(newlineIndex + 1);
+            riga2 = riga2.substring(0, Math.min(riga2.length(), LCD_COLS));
+        }
+    }
+    lcd.setCursor(0, 0); 
+    lcd.print(riga1);
+    if (!riga2.isEmpty()) {
+        lcd.setCursor(0, 1)
         lcd.print(riga2);
     }
 }
