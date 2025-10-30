@@ -7,7 +7,7 @@ void initOutput();
 void resetOutput();
 void resetOutputLeds();
 void turnOnLed(int button_number);
-void keepControlLedFading(int intensity);
+void keepControlLedFading();
 void setText(String text);
 
 #endif

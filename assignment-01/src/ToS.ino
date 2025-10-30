@@ -5,16 +5,15 @@
 #include "kernel.h"
 
 int difficulty=0;
-int round=0;
 unsigned int score=0;
 
 void setup()
 {   
   initInput();
   initOutput();
-  initKernel();
   initCore();  
   changeState(INTRO_STATE);
+  Serial.begin(9600);
 }
 
 void loop()
@@ -27,15 +26,15 @@ void loop()
   case INTRO_STATE:
     intro();
     break;
-  case GAMING_STATE:
-    gaming();
-    break;
   case STARTING_STATE:
     starting();
-  break;
+    break;
+  case GAMING_STATE:
+    gaming();
+    break;  
   case CONTINUING_STATE:
     continuing();
-  break;
+    break;
   case GAME_OVER_STATE:
     over();
     break;

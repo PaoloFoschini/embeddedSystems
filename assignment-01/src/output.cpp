@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "config.h"
 #include "LiquidCrystal_I2C.h"
+#include <Math.h>
 
 // #define __DEBUG__
 
@@ -51,19 +52,17 @@ void setText(String text) {
     String riga2 = ""; // Inizializza a vuoto per sicurezza
 
     if (newlineIndex == -1) {
-        riga1 = text.substring(0, Math.min(text.length(), LCD_COLS));
+        riga1 = text.substring(0, min(text.length(), LCD_COLS));
     } else {
         riga1 = text.substring(0, newlineIndex);
-        riga1 = riga1.substring(0, Math.min(riga1.length(), LCD_COLS));
+        riga1 = riga1.substring(0, min(riga1.length(), LCD_COLS));
         if (newlineIndex + 1 < text.length()) {
             riga2 = text.substring(newlineIndex + 1);
-            riga2 = riga2.substring(0, Math.min(riga2.length(), LCD_COLS));
+            riga2 = riga2.substring(0, min(riga2.length(), LCD_COLS));
         }
     }
     lcd.setCursor(0, 0); 
     lcd.print(riga1);
-    if (!riga2.isEmpty()) {
-        lcd.setCursor(0, 1)
-        lcd.print(riga2);
-    }
+    lcd.setCursor(0, 1);
+    lcd.print(riga2);
 }
