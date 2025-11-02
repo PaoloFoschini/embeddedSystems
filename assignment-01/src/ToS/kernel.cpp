@@ -1,5 +1,5 @@
 #include "input.h"
-#include "Arduino.h"
+#include <Arduino.h>
 #include "config.h"
 
 /* current state */

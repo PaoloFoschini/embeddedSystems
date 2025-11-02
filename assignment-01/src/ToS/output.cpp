@@ -1,8 +1,14 @@
 #include "output.h"
-#include "Arduino.h"
+#include <Arduino.h>
 #include "config.h"
 #include "LiquidCrystal_I2C.h"
 #include <Math.h>
+
+#define SDA_PIN SDA
+#define SCL_PIN SCL
+#define LCD_ADDRESS 0x27
+#define LCD_ROWS 2
+#define LCD_COLS 16
 
 // #define __DEBUG__
 
@@ -26,6 +32,22 @@ void resetOutput(){
   lcd.clear();
 }
 
+void resetFading(){
+  fadeAmount = 5;
+  currIntensity = 0;
+  analogWrite(LS_PIN, currIntensity); 
+}
+
+void turnOffLCD(){
+  lcd.noDisplay();
+  lcd.noBacklight();
+}
+
+void turnOnLCD(){
+  lcd.display();
+  lcd.backlight();
+}
+
 void resetOutputLeds(){
   for (int i = 0; i < N_LEDS; i++) {
     digitalWrite(outputPins[i], LOW);      
@@ -41,23 +63,23 @@ void keepControlLedFading(){
   currIntensity = currIntensity + fadeAmount;
    if (currIntensity == 0 || currIntensity == 255) {
     fadeAmount = -fadeAmount ; 
-   } 
+  } 
 }
 
 void setText(String text) {
 
     lcd.clear();
-    int newlineIndex = text.indexOf('\n');
+    int newlinecurrentDigit = text.indexOf('\n');
     String riga1;
-    String riga2 = ""; // Inizializza a vuoto per sicurezza
+    String riga2 = "";
 
-    if (newlineIndex == -1) {
+    if (newlinecurrentDigit == -1) {
         riga1 = text.substring(0, min(text.length(), LCD_COLS));
     } else {
-        riga1 = text.substring(0, newlineIndex);
+        riga1 = text.substring(0, newlinecurrentDigit);
         riga1 = riga1.substring(0, min(riga1.length(), LCD_COLS));
-        if (newlineIndex + 1 < text.length()) {
-            riga2 = text.substring(newlineIndex + 1);
+        if (newlinecurrentDigit + 1 < text.length()) {
+            riga2 = text.substring(newlinecurrentDigit + 1);
             riga2 = riga2.substring(0, min(riga2.length(), LCD_COLS));
         }
     }

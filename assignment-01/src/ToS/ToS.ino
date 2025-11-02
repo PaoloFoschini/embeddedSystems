@@ -4,27 +4,23 @@
 #include "core.h"
 #include "kernel.h"
 
-int difficulty=0;
-unsigned int score=0;
-
 void setup()
 {   
   initInput();
   initOutput();
   initCore();  
-  changeState(INTRO_STATE);
-  Serial.begin(9600);
+  changeState(INITIAL_STATE);
 }
 
 void loop()
 {
   updateStateTime();
   switch (getCurrentState()) {
-  case POWER_STATE:
-    power();
+  case SLEEP_STATE:
+    sleeping();
     break; 
-  case INTRO_STATE:
-    intro();
+  case INITIAL_STATE:
+    initializing();
     break;
   case STARTING_STATE:
     starting();
@@ -32,8 +28,8 @@ void loop()
   case GAMING_STATE:
     gaming();
     break;  
-  case CONTINUING_STATE:
-    continuing();
+  case END_ROUND_STATE:
+    endingRound();
     break;
   case GAME_OVER_STATE:
     over();

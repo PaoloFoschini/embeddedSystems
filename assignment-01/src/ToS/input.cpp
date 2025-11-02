@@ -1,7 +1,6 @@
 #include "input.h"
-#include "Arduino.h"
 #include "config.h"
-
+#include <Arduino.h>
 #include <EnableInterrupt.h>
 
 #define BOUNCING_TIME 50
@@ -10,6 +9,7 @@
 
 uint8_t inputPins[N_BUT] = {B1_PIN, B2_PIN, B3_PIN, B4_PIN}; //All Button PINS
 bool buttonPressed[N_BUT] = {false, false, false, false}; //Array to avoid multiple press if hold pressed Button
+int lastButtonPressed = -1;
 
 long lastButtonPressedTimestamps[N_BUT];
 
@@ -28,6 +28,7 @@ void buttonHandler(int i){
     int status = digitalRead(inputPins[i]);
     if (status == HIGH && !buttonPressed[i]) { 
         buttonPressed[i] = true;
+        lastButtonPressed = i;        
     }
   }
 }
@@ -45,16 +46,23 @@ void resetInput(){
     buttonPressed[i] = false;      
     lastButtonPressedTimestamps[i] = ts;    
   }
+  resetLastPressedButton();
 }
 
-bool isButtonPressed(int buttonIndex){
-  return buttonPressed[buttonIndex];
+bool isButtonPressed(int buttoncurrentDigit){
+  return buttonPressed[buttoncurrentDigit];
 }
 
-bool hasBeenPressed(int index){
-  return buttonPressed[index]; 
+void resetLastPressedButton(){
+  lastButtonPressed = -1;
 }
+
+int getLastPressedButton(){
+  return lastButtonPressed;
+}
+
 
 int getPotValue(){
   return analogRead(POT_PIN);
 }
+
