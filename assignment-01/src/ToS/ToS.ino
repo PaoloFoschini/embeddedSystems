@@ -1,3 +1,7 @@
+/*  Foschini Paolo    0001122840
+*   Pertegato Marco   0001123050
+*   Sargov Valerii    0001124110
+*/
 #include "config.h"
 #include "input.h"
 #include "output.h"
