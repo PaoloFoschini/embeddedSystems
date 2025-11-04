@@ -69,7 +69,7 @@ void starting()
     if (isJustEnteredInState())
     {
         resetOutput();
-        String s = "GO!\nDifficulty: " + String(difficulty);    // Sligthly modified the message to show the Difficuly at the start of the game
+        String s = "GO!\nDifficulty: " + String(difficulty+1);    // Sligthly modified the message to show the Difficuly at the start of the game
         setText(s);
     }
     if (getCurrentTimeInState() > DISPLAYING_TIME)
