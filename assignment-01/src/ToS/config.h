@@ -1,8 +1,6 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
-// #define __DEBUG__
-
 #define N_LEDS 4
 #define L1_PIN 7
 #define L2_PIN 8
@@ -19,13 +17,13 @@
 
 #define POT_PIN A0
 
-#define T1 10000 //Tempo iniziale
-#define FX  250 //Riduzione Tempo per Round (regolata dal potenziometro su un base di 4 difficoltà)
+#define T1 10000    //Initial Time
+#define FX  250     //Time Factor Reduction (regulated by POT value based on 4 difficulties)
 
-#define IDLE_TIME 10000 //Tempo dopo il quale va in deepsleep
-#define GAME_OVER_DURATION 10000 //Tempo dopo il quale va in deepsleep
-#define DISPLAYING_TIME 3000 //Time where LCD is showing some messages during transition states
-#define LS_DURATION 2000 //Tempo di accensione di LS
-#define GAME_TICK 50
+#define IDLE_TIME 10000             //Time that system waits before going in deepsleep
+#define GAME_OVER_DURATION 10000    //Time that system waits before resetting after GameOver
+#define DISPLAYING_TIME 3000        //Time where LCD is showing some messages during transition states
+#define LS_DURATION 2000            //Duration of LS LED in GameOver
+#define GAME_TICK 50                //Refresh Tick of the Game
 
 #endif

@@ -5,8 +5,6 @@
 
 #define BOUNCING_TIME 50
 
-// #define __DEBUG__
-
 uint8_t inputPins[N_BUT] = {B1_PIN, B2_PIN, B3_PIN, B4_PIN}; //All Button PINS
 bool buttonPressed[N_BUT] = {false, false, false, false}; //Array to avoid multiple press if hold pressed Button
 int lastButtonPressed = -1;

@@ -10,8 +10,6 @@
 #define LCD_ROWS 2
 #define LCD_COLS 16
 
-// #define __DEBUG__
-
 uint8_t outputPins[N_LEDS] = {L1_PIN,L2_PIN,L3_PIN, L4_PIN};
 
 int fadeAmount = 5;

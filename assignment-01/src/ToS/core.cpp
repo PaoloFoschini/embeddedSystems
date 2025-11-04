@@ -13,42 +13,44 @@ int sequenceNumbers[N_LEDS] = {0, 1, 2, 3};
 int currentDigit;
 int pressedButton;
 
-void initCore(){
+void initCore()
+{
     Serial.begin(9600);
-    pressedButton=-1;
+    pressedButton = -1;
     difficulty = 0;
     score = 0;
     currentDigit = 0;
 }
 
-void sleeping(){
-    Serial.println("GOING IN POWER DOWN IN 1s ...");
+void sleeping()
+{
+    Serial.println("GOING IN POWER DOWN ...");
     Serial.flush();
-    delay(1000);
+    delay(100);
     detachHandler();
     turnOffLCD();
     resetFading();
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);  
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_enable();
-    sleep_mode();    
-    sleep_disable();   
+    sleep_mode();
+    sleep_disable();
     Serial.println("WAKE UP");
     attachHandler();
     turnOnLCD();
     changeState(INITIAL_STATE);
 }
 
-void initializing(){ 
+void initializing()
+{
     if (isJustEnteredInState())
     {
-        //Should be:"Press B1 to Start", but LCD only has 16 columns so it would be not fully readable
-        setText("Welcome to TOS!\nPress B1 to Play");         
+        setText("Welcome to TOS!\nPress B1 to Play");   // Should be:"Press B1 to Start", but LCD only has 16 columns so it would be not fully readable
         resetInput();
     }
     if (isButtonPressed(0))
     {
         difficulty = ceil(getPotValue() / 255);
-        score=0;
+        score = 0;
         changeState(STARTING_STATE);
     }
     if (getCurrentTimeInState() > IDLE_TIME)
@@ -58,12 +60,13 @@ void initializing(){
     keepControlLedFading();
 }
 
-void starting(){
+void starting()
+{
     if (isJustEnteredInState())
     {
         resetOutput();
-        setText("GO!");
-        score = 0;
+        String s = "GO!\nDifficulty: " + String(difficulty);    // Sligthly modified the message to show the Difficuly at the start of the game
+        setText(s);
     }
     if (getCurrentTimeInState() > DISPLAYING_TIME)
     {
@@ -71,14 +74,16 @@ void starting(){
     }
 }
 
-void gaming(){
+void gaming()
+{
     if (isJustEnteredInState())
     {
         resetInput();
         currentDigit = 0;
         resetLastPressedButton();
         randomSeed(millis());
-        for (size_t i = N_LEDS - 1; i > 0; i--) {
+        for (size_t i = N_LEDS - 1; i > 0; i--)
+        {
             size_t j = random(0, i + 1);
             int t = sequenceNumbers[i];
             sequenceNumbers[i] = sequenceNumbers[j];
@@ -86,19 +91,20 @@ void gaming(){
         }
 
         String str;
-        for (size_t i = 0; i < N_LEDS; i++) {
+        for (size_t i = 0; i < N_LEDS; i++)
+        {
             str += String(sequenceNumbers[i] + 1);
         }
-        Serial.println(str);
         setText(str);
     }
     int temp = pressedButton;
     pressedButton = getLastPressedButton();
-    if(pressedButton!=temp){
-        if(pressedButton>=0 && pressedButton<=3){      
-            turnOnLed(pressedButton);      
+    if (pressedButton != temp)      // User can insert two time consecutively the same number, cause the array cannot contain duplicates
+    {
+        if (pressedButton >= 0 && pressedButton <= 3)
+        {
+            turnOnLed(pressedButton);
             checkCorrectSequence(pressedButton);
-            
         }
     }
     if (getCurrentTimeInState() > T1 - (FX * score * difficulty))
@@ -107,17 +113,15 @@ void gaming(){
     }
 }
 
-void checkCorrectSequence(int buttoncurrentDigit){
-    Serial.print(String("currentDigit ") + currentDigit);
-    Serial.print(String("|button ") + buttoncurrentDigit);
-    Serial.print(String("|array ") + sequenceNumbers[currentDigit]);
-    Serial.println(getCurrentTimeInState());
+void checkCorrectSequence(int buttoncurrentDigit)
+{
     if (sequenceNumbers[currentDigit] == buttoncurrentDigit)
     {
         currentDigit++;
-        if(currentDigit>=N_LEDS){
+        if (currentDigit >= N_LEDS)
+        {
             score++;
-            delay(1000);
+            delay(2000);    //Delay needed to show for 1sec all green leds ON before transitioning to the End Round State
             changeState(END_ROUND_STATE);
         }
     }
@@ -127,7 +131,8 @@ void checkCorrectSequence(int buttoncurrentDigit){
     }
 }
 
-void endingRound(){
+void endingRound()
+{
     if (isJustEnteredInState())
     {
         resetOutputLeds();
@@ -140,11 +145,12 @@ void endingRound(){
     }
 }
 
-void over(){
+void over()
+{
     if (isJustEnteredInState())
     {
         resetOutput();
-        String s="Game Over\nFinal Score:"+String(score);
+        String s = "Game Over\nFinal Score:" + String(score);
         setText(s);
         digitalWrite(LS_PIN, HIGH);
     }
