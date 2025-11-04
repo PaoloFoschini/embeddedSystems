@@ -66,3 +66,27 @@ int getPotValue(){
   return analogRead(POT_PIN);
 }
 
+void disableAll(){
+  for (int i = 0; i < N_BUT; i++) {
+    disableInterrupt(inputPins[i]);       
+  }
+}
+
+void reEnableAll(){
+  for (int i = 0; i < N_BUT; i++) {
+    enableInterrupt(inputPins[i], buttonHandlers[i], CHANGE);       
+  }
+}
+
+void detachHandler(){
+  disableAll();
+  enableInterrupt(inputPins[0], wakeUp, RISING);
+}
+
+void attachHandler(){
+  disableInterrupt(inputPins[0]);
+  reEnableAll();
+}
+
+void wakeUp(){}
+

@@ -21,12 +21,11 @@ void initCore(){
     currentDigit = 0;
 }
 
-void wakeUp(){}
-
 void sleeping(){
     Serial.println("GOING IN POWER DOWN IN 1s ...");
     Serial.flush();
     delay(1000);
+    detachHandler();
     turnOffLCD();
     resetFading();
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);  
@@ -34,11 +33,12 @@ void sleeping(){
     sleep_mode();    
     sleep_disable();   
     Serial.println("WAKE UP");
+    attachHandler();
     turnOnLCD();
     changeState(INITIAL_STATE);
 }
 
-void initializing(){
+void initializing(){ 
     if (isJustEnteredInState())
     {
         //Should be:"Press B1 to Start", but LCD only has 16 columns so it would be not fully readable

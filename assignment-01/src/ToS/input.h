@@ -7,5 +7,10 @@ bool isButtonPressed(int buttoncurrentDigit);
 void resetLastPressedButton();
 int getLastPressedButton();
 int getPotValue();
+void detachHandler();
+void attachHandler();
+void disableAll();
+void reEnableAll();
+void wakeUp();
  
 #endif
